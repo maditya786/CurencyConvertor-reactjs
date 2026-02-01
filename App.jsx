@@ -2,14 +2,24 @@ import { useEffect,useState } from "react";
 import useCurrencyInfo from  "./hooks/useCurrencyInfo";
 
 function App() {  
-const rates = useCurrencyInfo("USD");
-const currencyOptions = Object.keys(rates);
-const [fromCurrency, setFromCurrency] = useState("");
+  
+  const [fromCurrency, setFromCurrency] = useState("");
+
+  const rates = useCurrencyInfo("USD");
+  const currencyOptions = Object.keys(rates);
 const [toCurrency, setToCurrency] = useState("");
 const [Amount,setamount]=useState("")
 // const[label,setlabel]=useState(false)
   // console.log(currencyOptions);
+  
+  const handleswapp = ()=>{
+    setFromCurrency(toCurrency)
+    setToCurrency(fromCurrency)
+  }
+
   let convertedcurrnecy =""
+    console.log("From",fromCurrency);
+
   if(Amount && rates[fromCurrency] && rates[toCurrency]){
     convertedcurrnecy = (Amount * (rates[toCurrency]/rates[fromCurrency])).toFixed(2)
   }
@@ -43,6 +53,8 @@ const [Amount,setamount]=useState("")
       value={Amount}
       onChange={(e)=>setamount(e.target.value)}
     />
+    
+    
   </div>
   <div className="text-end">
     <label className="text-muted small text-nowrap">Currency Type</label>
@@ -59,7 +71,7 @@ const [Amount,setamount]=useState("")
   </div>
            </div>
 
-           <button className="btn btn-info rounded-pill px-3 py-1  mx-auto" style={{top:"50%",zIndex:2,marginTop:"-30px",marginBottom:"-20px"}}> <i className="bi bi-arrow-down-up fs-5"></i></button>
+           <button onClick={handleswapp} className="btn btn-info rounded-pill px-3 py-1  mx-auto" style={{top:"50%",zIndex:2,marginTop:"-30px",marginBottom:"-20px"}}> <i className="bi bi-arrow-down-up fs-5"></i></button>
          <div className="w-75 bg-white rounded-4 px-4 py-3 d-flex align-items-center justify-content-between mb-3 mx-auto">
 
               <div className="flex-grow-1 me-3">
@@ -73,9 +85,10 @@ const [Amount,setamount]=useState("")
       readOnly
     />
   </div>
+ 
   <div className="text-end">
     <label className="text-muted small text-nowrap">Currency Type</label>
-      <select className="form-select form-select-sm mt-1" value={toCurrency} onChange={(e)=>setToCurrency(e.target.value)} >
+      <select className="form-select form-select-sm mt-1" value={toCurrency} onChange={(e)=>setToCurrency(e.target.value)} disabled={!fromCurrency} >
          <option value="" >
     Select currency
   </option>
@@ -86,6 +99,7 @@ const [Amount,setamount]=useState("")
       ))}
     </select>
   </div>
+ 
            </div>
  <button className="btn btn-primary mb-4 w-75 rounded-4 mx-auto">Convert</button>
            </div> 
